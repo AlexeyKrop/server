@@ -1,15 +1,15 @@
-import express from "express";
+import express, { Request, Response } from "express";
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
-app.get("/api/hello", (req, res) => {
+app.get("/api/hello", (req: Request, res: Response) => {
   res.send({ message: "Hello from server!" });
 });
 
-app.post("/api/data", (req, res) => {
+app.post("/api/data", (req: Request, res: Response) => {
   console.log(req.body);
   res.send({ status: "Data received", data: req.body });
 });
