@@ -8,6 +8,6 @@
     "skipLibCheck": true,
     "outDir": "./dist"                           
   },
-  "include": ["express/api/**/*", "src/index.ts"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }
