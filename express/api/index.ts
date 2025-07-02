@@ -1,14 +1,19 @@
 import express from "express";
-import path from "path";
 
 const app = express();
+const port = process.env.PORT || 3000;
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.use(express.json());
+
+app.get("/api/hello", (req, res) => {
+  res.send({ message: "Hello from server!" });
 });
 
-app.get("/about", function (req, res) {
-  res.send("about");
+app.post("/api/data", (req, res) => {
+  console.log(req.body);
+  res.send({ status: "Data received", data: req.body });
 });
 
-export default app;
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
