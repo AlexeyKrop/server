@@ -5,7 +5,7 @@ const port = 3000;
 
 app.use(express.json());
 
-app.get("/api/hello", (req: Request, res: Response) => {
+app.get("/", (req: Request, res: Response) => {
   res.send({ message: "Hello from server!" });
 });
 
