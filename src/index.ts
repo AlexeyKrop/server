@@ -5,11 +5,21 @@ const port = 3000;
 
 app.use(express.json());
 
+const users = [
+  { id: 1, name: "Alice", age: 25 },
+  { id: 2, name: "Bob", age: 30 },
+  { id: 3, name: "Charlie", age: 22 },
+];
+
 app.get("/", (req: Request, res: Response) => {
   res.send({ message: "Hello from server!" });
 });
 
-app.post("/api/data", (req: Request, res: Response) => {
+app.get("/users", (req: Request, res: Response) => {
+  res.send({ users });
+});
+
+app.post("/data", (req: Request, res: Response) => {
   console.log(req.body);
   res.send({ status: "Data received", data: req.body });
 });
