@@ -9,13 +9,16 @@ export const authorsRepository = {
     getAll: async (): Promise<IAuthor[]> => {
         return authors;
     },
+
     getById: async (id: number): Promise<IAuthor | undefined> => {
         return authors.find((author) => author.id === id);
     },
+
     create: async (author: IAuthor): Promise<IAuthor> => {
         authors.push(author);
         return author;
     },
+
     update: async (id: number, author: Partial<IAuthor>): Promise<IAuthor | null> => {
         const index = authors.findIndex((author) => author.id === id);
         if (index === -1) {
@@ -24,6 +27,7 @@ export const authorsRepository = {
         authors[index] = {...authors[index], ...author};
         return authors[index];
     },
+
     delete: async (id: number): Promise<boolean | null> => {
         const index = authors.findIndex((author) => author.id === id);
         if (index === -1) {
