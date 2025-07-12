@@ -1,39 +1,45 @@
+import type { Author as PrismaAuthor } from '@prisma/client'
+import { prisma } from '../../prisma';
 import {IAuthor} from "../../routes/interfaces";
-const authors = [
-    {id: 1, firstName: 'George', lastName: 'Orwell', birthYear: 1903, country: 'UK'},
-    {id: 2, firstName: 'Harper', lastName: 'Lee', birthYear: 1926, country: 'USA'},
-    {id: 3, firstName: 'J. K.', lastName: 'Rowling', birthYear: 1965, country: 'UK'},
-];
+
 
 export const authorsRepository = {
     getAll: async (): Promise<IAuthor[]> => {
-        return authors;
-    },
+        const raw = await prisma.author.findMany();
+        return raw.map(mapAuthor);
+      },
 
-    getById: async (id: number): Promise<IAuthor | undefined> => {
-        return authors.find((author) => author.id === id);
-    },
+      getById: async (id: number): Promise<IAuthor | null> => {
+        const raw = await prisma.author.findUnique({ where: { id } });
+        return raw ? mapAuthor(raw) : null;
+      },
 
-    create: async (author: IAuthor): Promise<IAuthor> => {
-        authors.push(author);
-        return author;
-    },
+      create: async (data: Omit<IAuthor, 'id'>): Promise<IAuthor> => {
+        const raw = await prisma.author.create({ data });
+        return mapAuthor(raw);
+      },
 
-    update: async (id: number, author: Partial<IAuthor>): Promise<IAuthor | null> => {
-        const index = authors.findIndex((author) => author.id === id);
-        if (index === -1) {
-            return null;
-        }
-        authors[index] = {...authors[index], ...author};
-        return authors[index];
+    update: async (id: number, data: Partial<IAuthor>): Promise<IAuthor | null> => {
+        const raw = await prisma.author.update({
+            where: {id},
+            data,
+        });
+
+        return mapAuthor(raw);
     },
 
     delete: async (id: number): Promise<boolean | null> => {
-        const index = authors.findIndex((author) => author.id === id);
-        if (index === -1) {
-            return null;
-        }
-        authors.splice(index, 1);
+        await prisma.author.delete({ where: { id } });
         return true;
     }
 }
+
+export function mapAuthor(author: PrismaAuthor): IAuthor {
+    return {
+      id:         author.id,
+      firstName:  author.firstName,
+      lastName:   author.lastName,
+      birthYear:  author.birthYear ?? null,
+      country:    author.country ?? null,
+    };
+  }

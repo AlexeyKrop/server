@@ -1,8 +1,7 @@
-
 export interface IAuthor {
     id: number;
-    firstName: string;
-    lastName: string;
-    birthYear: number;
-    country: string;
+    firstName: string
+    lastName: string
+    birthYear: string | null
+    country: string | null
 }
