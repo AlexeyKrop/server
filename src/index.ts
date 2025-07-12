@@ -1,12 +1,12 @@
 import express from "express";
-import {authorsRoutes} from "./routes/authors/authors";
+import {authorsRoutes} from "./routes";
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
 
-app.use("/users", authorsRoutes);
+app.use("/", authorsRoutes);
 
 
 app.listen(port, () => {
