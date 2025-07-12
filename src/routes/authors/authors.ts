@@ -1,6 +1,6 @@
 import {Router, Request, Response} from "express";
 import {IAuthor} from "../interfaces";
-import {authorsRepository} from "../../repositiries";
+import {authorsRepository} from "../../repositories";
 
 export const authorsRoutes = Router();
 
