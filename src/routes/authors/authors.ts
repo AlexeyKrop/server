@@ -4,14 +4,14 @@ import {authorsRepository} from "../../repositiries";
 
 export const authorsRoutes = Router();
 
-authorsRoutes.get("/", (_, res: Response<{authors: IAuthor[]}>) => {
-    const authors = authorsRepository.getAll();
+authorsRoutes.get("/", async (_, res: Response<{authors: IAuthor[]}>) => {
+    const authors = await authorsRepository.getAll();
     res.status(200).json({authors});
 });
 
-authorsRoutes.get("/:id", (req: Request<{id: string}>, res: Response<{author: IAuthor} | {message: string}>) => {
+authorsRoutes.get("/:id", async (req: Request<{id: string}>, res: Response<{author: IAuthor} | {message: string}>) => {
     const {id} = req.params;
-    const author = authorsRepository.getById(Number(id));
+    const author = await authorsRepository.getById(Number(id));
 
     if (!author) {
         res.status(404).json({message: "Author not found"});
@@ -20,19 +20,19 @@ authorsRoutes.get("/:id", (req: Request<{id: string}>, res: Response<{author: IA
     res.status(200).json({author});
 });
 
-authorsRoutes.post("/", (req: Request<{}, {}, IAuthor>, res: Response<{author: IAuthor}>) => {
+authorsRoutes.post("/", async (req: Request<{}, {}, IAuthor>, res: Response<{author: IAuthor}>) => {
     const newAuthor = {
         ...req.body,
-        id: authorsRepository.getAll().length + 1
+        id: (await authorsRepository.getAll()).length + 1
     };
-    const createdAuthor = authorsRepository.create(newAuthor);
+    const createdAuthor = await authorsRepository.create(newAuthor);
     res.status(201).json({author: createdAuthor});
 });
 
-authorsRoutes.put("/:id", (req: Request<{id: string}, {}, Partial<IAuthor>>, res: Response<{author: IAuthor} | {message: string}>) => {
+authorsRoutes.put("/:id", async (req: Request<{id: string}, {}, Partial<IAuthor>>, res: Response<{author: IAuthor} | {message: string}>) => {
     const {id} = req.params;
 
-    const updatedAuthor = authorsRepository.update(Number(id), req.body);
+    const updatedAuthor = await authorsRepository.update(Number(id), req.body);
     if (!updatedAuthor) {
         res.status(404).json({message: "Author not found"});
         return
@@ -41,9 +41,9 @@ authorsRoutes.put("/:id", (req: Request<{id: string}, {}, Partial<IAuthor>>, res
 });
 
 
-authorsRoutes.delete("/:id", (req: Request<{id: string}>, res: Response<{message: string}>) => {
+authorsRoutes.delete("/:id", async (req: Request<{id: string}>, res: Response<{message: string}>) => {
     const {id} = req.params;
-    const deletedAuthor = authorsRepository.delete(Number(id));
+    const deletedAuthor = await authorsRepository.delete(Number(id));
     if (!deletedAuthor || deletedAuthor === null) {
         res.status(404).json({message: "Author not found"});
         return;

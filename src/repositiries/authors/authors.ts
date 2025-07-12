@@ -6,17 +6,17 @@ const authors = [
 ];
 
 export const authorsRepository = {
-    getAll: (): IAuthor[] => {
+    getAll: async (): Promise<IAuthor[]> => {
         return authors;
     },
-    getById: (id: number): IAuthor | undefined => {
+    getById: async (id: number): Promise<IAuthor | undefined> => {
         return authors.find((author) => author.id === id);
     },
-    create: (author: IAuthor): IAuthor => {
+    create: async (author: IAuthor): Promise<IAuthor> => {
         authors.push(author);
         return author;
     },
-    update: (id: number, author: Partial<IAuthor>): IAuthor | null => {
+    update: async (id: number, author: Partial<IAuthor>): Promise<IAuthor | null> => {
         const index = authors.findIndex((author) => author.id === id);
         if (index === -1) {
             return null;
@@ -24,7 +24,7 @@ export const authorsRepository = {
         authors[index] = {...authors[index], ...author};
         return authors[index];
     },
-    delete: (id: number): boolean | null => {
+    delete: async (id: number): Promise<boolean | null> => {
         const index = authors.findIndex((author) => author.id === id);
         if (index === -1) {
             return null;
