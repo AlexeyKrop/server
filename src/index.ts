@@ -6,7 +6,7 @@ const port = 3000;
 
 app.use(express.json());
 
-app.use("/", authorsRoutes);
+app.use("/authors", authorsRoutes);
 
 
 app.listen(port, () => {
