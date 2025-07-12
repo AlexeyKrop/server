@@ -21,7 +21,10 @@ authorsRoutes.get("/:id", (req: Request<{id: string}>, res: Response<{author: IA
 });
 
 authorsRoutes.post("/", (req: Request<{}, {}, IAuthor>, res: Response<{author: IAuthor}>) => {
-    const newAuthor = req.body;
+    const newAuthor = {
+        ...req.body,
+        id: authorsRepository.getAll().length + 1
+    };
     const createdAuthor = authorsRepository.create(newAuthor);
     res.status(201).json({author: createdAuthor});
 });
