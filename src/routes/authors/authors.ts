@@ -21,11 +21,7 @@ authorsRoutes.get("/:id", async (req: Request<{id: string}>, res: Response<{auth
 });
 
 authorsRoutes.post("/", async (req: Request<{}, {}, IAuthor>, res: Response<{author: IAuthor}>) => {
-    const newAuthor = {
-        ...req.body,
-        id: (await authorsRepository.getAll()).length + 1
-    };
-    const createdAuthor = await authorsRepository.create(newAuthor);
+    const createdAuthor = await authorsRepository.create(req.body);
     res.status(201).json({author: createdAuthor});
 });
 
